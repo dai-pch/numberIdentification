@@ -38,5 +38,8 @@
     <ClCompile Include="sortStringArea.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="findNumberArea.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

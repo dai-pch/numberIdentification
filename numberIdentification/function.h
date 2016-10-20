@@ -20,3 +20,6 @@ Mat separateStringArea(Mat src, Rect rectArea);
 
 //对数字串区域排序，按照从上到下
 vector<Rect> sortStringArea(vector<Rect> srcRect);
+
+//寻找数字串中单个数字的区域范围，返回矩形轮廓
+vector<Rect> findNumberArea(Mat src, int thresholdVal);
