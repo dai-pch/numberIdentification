@@ -67,6 +67,7 @@ int main()
 	//}
 	//imshow("part1", parts[1]);
 
+
 	//imshow("parts0", parts[0]);
 	//imshow("parts1", parts[1]);
 	//imshow("parts2", parts[2]);
