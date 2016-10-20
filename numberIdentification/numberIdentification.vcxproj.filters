@@ -41,5 +41,11 @@
     <ClCompile Include="findNumberArea.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="enhanceStringArea.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="separateNumberArea.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

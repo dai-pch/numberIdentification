@@ -28,8 +28,7 @@ vector<Rect> findNumberArea(Mat src, int thresholdVal, Size kernelSize1, Size ke
 	kernel = getStructuringElement(MORPH_RECT, kernelSize2, Point(-1, -1));	//纵向矩形核
 	dilate(dst, dst, kernel, Point(-1, -1), 1, 0);
 
-
-	imshow("show", dst);
+	//imshow("show", dst);
 
 	//计算外接矩形
 	Mat mask_contours;

@@ -23,3 +23,8 @@ vector<Rect> sortStringArea(vector<Rect> srcRect);
 
 //寻找数字串中单个数字的区域范围，返回矩形轮廓
 vector<Rect> findNumberArea(Mat src, int thresholdVal, Size kernelSize1, Size kernelSize2);
+
+void enhanceStringArea(vector<Mat> parts);
+
+//分离数字串中的数字，返回Mat的vector
+vector<Mat> separateNumberArea(Mat part, vector<Rect> number);

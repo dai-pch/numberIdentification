@@ -20,18 +20,20 @@ int main()
 
 	//分离区域
 	vector<Mat> parts;
+	vector<Mat> parts_changeable(stringArea.size());
 	parts.clear();
 	for (int i = 0; i < stringArea.size(); i++)
+	{
 		parts.push_back(separateStringArea(src, stringArea[i]));
-	Mat shadow = Mat(Size(parts[1].cols - 450, parts[1].rows),parts[1].type(),Scalar(CV_RGB(0,0,0)));
-	addWeighted(shadow,0.17,parts[1](Rect(450, 0,parts[1].cols-450,parts[1].rows)),0.83,
-		0, parts[1](Rect(450, 0, parts[1].cols - 450, parts[1].rows)));
+		parts[i].copyTo(parts_changeable[i]);
+	}
+	enhanceStringArea(parts_changeable);
 
 	//寻找单个区域中的单个数字
 	vector<vector<Rect>> numbers(parts.size());
-	//numbers[0] = findNumberArea(parts[0], 190, Size(10, 2), Size(2, 300));
-	numbers[1] = findNumberArea(parts[1], 155, Size(10, 2), Size(2, 300));
-
+	numbers[0] = findNumberArea(parts_changeable[0], 190, Size(10, 2), Size(2, 300));
+	numbers[1] = findNumberArea(parts_changeable[1], 155, Size(10, 2), Size(2, 300));
+	numbers[2] = findNumberArea(parts_changeable[2], 150, Size(2, 11), Size(2, 300));
 	//查看
 	//char str[6] = "test0";
 	//for (int i = 0; i < numbers.size(); i++)
@@ -44,13 +46,32 @@ int main()
 	//	imshow(str, parts[i]);
 	//}
 	
+	//分离单个数字，注意：一定要注释掉上方的查看部分，否则会有边框
+	vector<Mat> numbersArea0(numbers[0].size());
+	vector<Mat> numbersArea1(numbers[1].size());
+	vector<Mat> numbersArea2(numbers[2].size());
+	numbersArea0 = separateNumberArea(parts[0], numbers[0]);
+	numbersArea1 = separateNumberArea(parts[1], numbers[1]);
+	numbersArea2 = separateNumberArea(parts[2], numbers[2]);
+	//查看
+	//char strNum[4] = "2-0";
+	//for (int i = 0; i < numbersArea1.size(); i++)
+	//{
+	//	strNum[2] = (char)(i+'0');
+	//	namedWindow(strNum, WINDOW_NORMAL);
+	//	imshow(strNum, numbersArea1[i]);
+	//}
+	//for(int j = 0; j < numbers[1].size(); j++)
+	//{
+	//	rectangle(parts[1], numbers[1][j], Scalar(CV_RGB(0, 255, 0)), 1, 8, 0);
+	//}
+	//imshow("part1", parts[1]);
+
 
 	//imshow("parts0", parts[0]);
 	//imshow("parts1", parts[1]);
 	//imshow("parts2", parts[2]);
 	//imshow("test", src_changeable);
-	
-
 	//printf("%d,%d", stringArea[0].x, stringArea[0].y);
 
 	waitKey(0);

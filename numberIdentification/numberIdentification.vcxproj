@@ -152,10 +152,12 @@
     <ClInclude Include="header.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="enhanceStringArea.cpp" />
     <ClCompile Include="findNumberArea.cpp" />
     <ClCompile Include="findStringArea.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="preProcess.cpp" />
+    <ClCompile Include="separateNumberArea.cpp" />
     <ClCompile Include="separateStringArea.cpp" />
     <ClCompile Include="sortStringArea.cpp" />
   </ItemGroup>
