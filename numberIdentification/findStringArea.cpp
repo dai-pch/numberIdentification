@@ -1,11 +1,11 @@
 #include"header.h"
 
-//Ñ°ÕÒÊı×Ö´®ÇøÓòµÄº¯Êı£¬·µ»Ø¾ØĞÎÂÖÀª
+//å¯»æ‰¾æ•°å­—ä¸²åŒºåŸŸçš„å‡½æ•°ï¼Œè¿”å›çŸ©å½¢è½®å»“
 
 vector<Rect> findStringArea(Mat src)
 {
 	Mat dst, temp_mask;
-	//Í¨µÀ·ÖÀë
+	//é€šé“åˆ†ç¦»
 	vector<Mat> Vchannels;
 	Mat channel_b, channel_g, channel_r;
 	split(src, Vchannels);
@@ -13,22 +13,22 @@ vector<Rect> findStringArea(Mat src)
 	channel_g = Vchannels.at(1);
 	channel_r = Vchannels.at(2);
 
-	channel_r.copyTo(dst);				//ºìÉ«Í¨µÀ¶Ô±È¶È×î¸ß
+	channel_r.copyTo(dst);				//çº¢è‰²é€šé“å¯¹æ¯”åº¦æœ€é«˜
 
-	//ÊÖ¶¯ãĞÖµ»¯
+	//æ‰‹åŠ¨é˜ˆå€¼åŒ–
 	threshold(dst, dst, 155, 255, CV_THRESH_BINARY);
 
-	//À´Ò»²¨¿ª±Õ
-	Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(7, 7), Point(-1, -1));	//Ô²ºË£¬Ğ§¹û½ÏºÃ
+	//æ¥ä¸€æ³¢å¼€é—­
+	Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(7, 7), Point(-1, -1));	//åœ†æ ¸ï¼Œæ•ˆæœè¾ƒå¥½
 	erode(dst, dst, kernel, Point(-1, -1), 1, 0);
 	dilate(dst, dst, kernel, Point(-1, -1), 1, 0);
 	dilate(dst, dst, kernel, Point(-1, -1), 1, 0);
 	erode(dst, dst, kernel, Point(-1, -1), 1, 0);
 
-	//·ÖÀëÊı×Ö´®ÓÃµÄÄ£°å
+	//åˆ†ç¦»æ•°å­—ä¸²ç”¨çš„æ¨¡æ¿
 	boxFilter(dst, temp_mask, -1, Size(81, 81));
 	threshold(temp_mask, temp_mask, 20, 255, CV_THRESH_BINARY);
-	//³ıÒ»Ğ©¸ÉÈÅ£¬³¤ÌõĞÎºËÀ´¿ª±Õ
+	//é™¤ä¸€äº›å¹²æ‰°ï¼Œé•¿æ¡å½¢æ ¸æ¥å¼€é—­
 	Mat kernel_mask = getStructuringElement(MORPH_RECT, Size(50, 1), Point(-1, -1));
 	erode(temp_mask, temp_mask, kernel_mask, Point(-1, -1), 1, 0);
 	dilate(temp_mask, temp_mask, kernel_mask, Point(-1, -1), 1, 0);

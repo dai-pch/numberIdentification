@@ -4,10 +4,10 @@
 using namespace std;
 using namespace cv;
 
-/********************全局变量声明*********************/
+/********************鍏ㄥ眬鍙橀噺澹版槑*********************/
 //static Mat src = imread("./img/src.jpg");
 
-/**********************函数声明**********************/
+/**********************鍑芥暟澹版槑**********************/
 vector<Mat> preProcess(Mat src, vector<Mat> result);
 vector<Rect> findStringArea(Mat src);
 Mat separateStringArea(Mat src, Rect rectArea);

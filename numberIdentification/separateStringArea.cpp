@@ -1,6 +1,6 @@
 #include"header.h"
 
-//分离数字区域，返回区域的图片
+//鍒嗙鏁板瓧鍖哄煙锛岃繑鍥炲尯鍩熺殑鍥剧墖
 Mat separateStringArea(Mat src, Rect rectArea)
 {
 	Mat area;

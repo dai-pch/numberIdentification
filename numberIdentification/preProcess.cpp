@@ -1,13 +1,13 @@
 #include"header.h"
 
-//Í¼ÏñÔ¤´¦Àíº¯Êı
+//å›¾åƒé¢„å¤„ç†å‡½æ•°
 vector<Mat> preProcess(Mat src, vector<Mat> result)
 {
 	result.clear();
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 	Mat dst,temp_mask;
-	//Í¨µÀ·ÖÀë
+	//é€šé“åˆ†ç¦»
 	vector<Mat> Vchannels;
 	Mat channel_b, channel_g, channel_r;
 	split(src,Vchannels);
@@ -15,30 +15,30 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 	channel_g = Vchannels.at(1);
 	channel_r = Vchannels.at(2);
 
-	channel_r.copyTo(dst);				//ºìÉ«Í¨µÀ¶Ô±È¶È×î¸ß
+	channel_r.copyTo(dst);				//çº¢è‰²é€šé“å¯¹æ¯”åº¦æœ€é«˜
 
 	//addWeighted(channel_g, 0.5, channel_r, 0.5, 0, temp);
 
-	//À­ÆÕÀ­Ë¹Ëã×ÓÈñ»¯£¬Ğ§¹û²»ºÃ£¬·ÅÆú
+	//æ‹‰æ™®æ‹‰æ–¯ç®—å­é”åŒ–ï¼Œæ•ˆæœä¸å¥½ï¼Œæ”¾å¼ƒ
 	//Mat sharpenKernel = (Mat_<float>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
 	//filter2D(dst, dst, dst.depth(), sharpenKernel);
 
-	//¸ßÌáÉıÈñ»¯£¬Ğ§¹û¹ıµÃÈ¥£¬Äâ²ÉÓÃ
+	//é«˜æå‡é”åŒ–ï¼Œæ•ˆæœè¿‡å¾—å»ï¼Œæ‹Ÿé‡‡ç”¨
 	//Mat mask;
 	//GaussianBlur(dst, mask, Size(17, 17), 0, 0);
 	//mask = dst - mask;
 	//dst = dst + mask * 4;
 
-	//È«¾ÖãĞÖµ»¯£¬Ğ§¹û²»ºÃ£¬·ÅÆú
+	//å…¨å±€é˜ˆå€¼åŒ–ï¼Œæ•ˆæœä¸å¥½ï¼Œæ”¾å¼ƒ
 	//adaptiveThreshold(temp, dst, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
 
-	//ÊÖ¶¯ãĞÖµ»¯
+	//æ‰‹åŠ¨é˜ˆå€¼åŒ–
 	threshold(dst, dst, 155, 255, CV_THRESH_BINARY);
 
-	//À´Ò»²¨¿ª±Õ
-	//Mat kernel = getStructuringElement(MORPH_RECT, Size(5, 5), Point(-1, -1));	//·½ĞÎºË
-	//Mat kernel = getStructuringElement(MORPH_CROSS, Size(7, 7), Point(-1, -1));	//Ê®×ÖºË
-	Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(7, 7), Point(-1, -1));	//Ô²ºË£¬Ğ§¹û½ÏºÃ
+	//æ¥ä¸€æ³¢å¼€é—­
+	//Mat kernel = getStructuringElement(MORPH_RECT, Size(5, 5), Point(-1, -1));	//æ–¹å½¢æ ¸
+	//Mat kernel = getStructuringElement(MORPH_CROSS, Size(7, 7), Point(-1, -1));	//åå­—æ ¸
+	Mat kernel = getStructuringElement(MORPH_ELLIPSE, Size(7, 7), Point(-1, -1));	//åœ†æ ¸ï¼Œæ•ˆæœè¾ƒå¥½
 	erode(dst, dst, kernel, Point(-1, -1), 1, 0);
 	dilate(dst, dst, kernel, Point(-1, -1), 1, 0);
 	dilate(dst, dst, kernel, Point(-1, -1), 1, 0);
@@ -46,10 +46,10 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 
 
 	/******************************************************************************/
-	/*******************ÕûÌåãĞÖµ´¦ÀíĞ§¹û²»ºÃ,½ÓÏÂÀ´¿¼ÂÇ·Ö¿ª´¦Àí***************************/
+	/*******************æ•´ä½“é˜ˆå€¼å¤„ç†æ•ˆæœä¸å¥½,æ¥ä¸‹æ¥è€ƒè™‘åˆ†å¼€å¤„ç†***************************/
 	/******************************************************************************/
 
-	//·ÖÀëÊı×Ö´®ÓÃµÄÄ£°å
+	//åˆ†ç¦»æ•°å­—ä¸²ç”¨çš„æ¨¡æ¿
 	boxFilter(dst, temp_mask, -1, Size(81,81));
 	threshold(temp_mask, temp_mask, 20, 255, CV_THRESH_BINARY);
 	Mat kernel_mask = getStructuringElement(MORPH_RECT, Size(50, 1), Point(-1, -1));
@@ -75,12 +75,12 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 		rectangle(src_changeable, boundRect[i], Scalar(CV_RGB(255,0,0)), 2, 8, 0);
 		result.push_back(channel_r(Rect(boundRect[i])));
 	}
-	imshow("¼ì²âµ½µÄÊı×ÖÇøÓò", src_changeable);
+	imshow("æ£€æµ‹åˆ°çš„æ•°å­—åŒºåŸŸ", src_changeable);
 
 
-	//Êı×Ö²¿·Ö·Ö±ğ´¦Àí
+	//æ•°å­—éƒ¨åˆ†åˆ†åˆ«å¤„ç†
 	threshold(result[0], result[0], 148, 255, CV_THRESH_BINARY);
-	kernel = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(-1, -1));	//Ô²ºË£¬Ğ§¹û½ÏºÃ
+	kernel = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(-1, -1));	//åœ†æ ¸ï¼Œæ•ˆæœè¾ƒå¥½
 	erode(result[0], result[0], kernel, Point(-1, -1), 1, 0);
 	dilate(result[0], result[0], kernel, Point(-1, -1), 1, 0);
 	dilate(result[0], result[0], kernel, Point(-1, -1), 1, 0);

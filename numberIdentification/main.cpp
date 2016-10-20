@@ -11,7 +11,7 @@ int main()
 	src.copyTo(src_changeable);
 
 	vector<Rect> stringArea = findStringArea(src);
-	//²é¿´ÕÒµ½µÄÇøÓò
+	//æŸ¥çœ‹æ‰¾åˆ°çš„åŒºåŸŸ
 	for (int i = 0; i < stringArea.size(); i++)
 		rectangle(src_changeable, stringArea[i], Scalar(CV_RGB(255, 0, 0)), 2, 8, 0);
 
