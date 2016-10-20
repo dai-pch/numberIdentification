@@ -5,9 +5,10 @@ extern Mat src;
 
 int main()
 {
-	Mat dst = preProcess(src);
+	vector<Mat> parts;
+	parts = preProcess(src, parts);
 
-	imshow("test",dst);
+	//imshow("test",dst);
 	waitKey(0);
 	return 0;
 }

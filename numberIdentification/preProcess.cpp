@@ -1,8 +1,9 @@
 #include"header.h"
 
-//图相预处理函数
-Mat preProcess(Mat src)
+//图像预处理函数
+vector<Mat> preProcess(Mat src, vector<Mat> result)
 {
+	result.clear();
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 	Mat dst,temp_mask;
@@ -44,6 +45,10 @@ Mat preProcess(Mat src)
 	erode(dst, dst, kernel, Point(-1, -1), 1, 0);
 
 
+	/******************************************************************************/
+	/*******************整体阈值处理效果不好,接下来考虑分开处理***************************/
+	/******************************************************************************/
+
 	//分离数字串用的模板
 	boxFilter(dst, temp_mask, -1, Size(81,81));
 	threshold(temp_mask, temp_mask, 20, 255, CV_THRESH_BINARY);
@@ -53,21 +58,27 @@ Mat preProcess(Mat src)
 	dilate(temp_mask, temp_mask, kernel_mask, Point(-1, -1), 1, 0);
 	erode(temp_mask, temp_mask, kernel_mask, Point(-1, -1), 1, 0);
 
+	kernel_mask = getStructuringElement(MORPH_RECT, Size(20, 20), Point(-1, -1));
+	erode(temp_mask, temp_mask, kernel_mask, Point(-1, -1), 1, 0);
+
 	Mat mask_contours;
 	temp_mask.copyTo(mask_contours);
 	vector<vector<Point>>contours;
 	vector<Vec4i> hierarchy;
 	findContours(mask_contours, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0));
-	vector<vector<Point> > contours_poly(contours.size());
+	vector<vector<Point>> contours_poly(contours.size());
 	vector<Rect> boundRect(contours.size());
 	for (int i = 0; i < contours.size(); i++)
 	{
 		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
 		boundRect[i] = boundingRect(Mat(contours_poly[i]));
 		rectangle(src_changeable, boundRect[i], Scalar(CV_RGB(255,0,0)), 2, 8, 0);
+		result.push_back(channel_r(Rect(boundRect[i])));
 	}
 	imshow("检测到的数字区域", src_changeable);
 
 
-	return dst;
+
+
+	return result;
 }

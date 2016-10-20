@@ -8,4 +8,4 @@ using namespace cv;
 static Mat src = imread("./img/src.jpg");
 
 /**********************º¯ÊıÉùÃ÷**********************/
-Mat preProcess(Mat src);
+vector<Mat> preProcess(Mat src, vector<Mat> result);
