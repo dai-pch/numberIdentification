@@ -10,11 +10,15 @@ int main()
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 
+	//查找区域
 	vector<Rect> stringArea = findStringArea(src);
+	//从上到下序号排序
+	stringArea = sortStringArea(stringArea);
 	//查看找到的区域
 	for (int i = 0; i < stringArea.size(); i++)
 		rectangle(src_changeable, stringArea[i], Scalar(CV_RGB(255, 0, 0)), 2, 8, 0);
 
+	//分离区域
 	vector<Mat> parts;
 	parts.clear();
 	for (int i = 0; i < stringArea.size(); i++)
@@ -25,6 +29,9 @@ int main()
 	imshow("parts1", parts[1]);
 	imshow("parts2", parts[2]);
 	imshow("test", src_changeable);
+
+	//printf("%d,%d", stringArea[0].x, stringArea[0].y);
+
 	waitKey(0);
 	return 0;
 }

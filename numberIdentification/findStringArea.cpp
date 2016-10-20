@@ -1,7 +1,6 @@
 #include"header.h"
 
 //寻找数字串区域的函数，返回矩形轮廓
-
 vector<Rect> findStringArea(Mat src)
 {
 	Mat dst, temp_mask;

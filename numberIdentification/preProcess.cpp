@@ -1,6 +1,6 @@
 #include"header.h"
 
-//图像预处理函数
+//图像预处理函数（测试）
 vector<Mat> preProcess(Mat src, vector<Mat> result)
 {
 	result.clear();
@@ -75,7 +75,7 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 		rectangle(src_changeable, boundRect[i], Scalar(CV_RGB(255,0,0)), 2, 8, 0);
 		result.push_back(channel_r(Rect(boundRect[i])));
 	}
-	imshow("检测到的数字区域", src_changeable);
+	imshow("show number area", src_changeable);
 
 
 	//数字部分分别处理
