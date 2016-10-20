@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0135)http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    <title>创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation</title>
+    
+    <link rel="stylesheet" href="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/default.css" type="text/css">
+    <link rel="stylesheet" href="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/pygments.css" type="text/css">
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '2.3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/jquery.js.下载"></script>
+    <script type="text/javascript" src="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/underscore.js.下载"></script>
+    <script type="text/javascript" src="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/doctools.js.下载"></script>
+    <script type="text/javascript" src="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/insertIframe.js.下载"></script>
+    <link rel="top" title="OpenCV 2.3.2 documentation" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/index.html">
+    <link rel="up" title="imgproc 模块. 图像处理" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/table_of_content_imgproc/table_of_content_imgproc.html">
+    <link rel="next" title="为轮廓创建可倾斜的边界框和椭圆" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rotated_ellipses/bounding_rotated_ellipses.html">
+    <link rel="prev" title="计算物体的凸包" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/hull/hull.html"> 
+  <style type="text/css">/* This is not a zero-length file! */</style><style type="text/css">/* This is not a zero-length file! */</style></head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/genindex.html" title="General Index" accesskey="I">index</a></li>
+        <li class="right">
+          <a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rotated_ellipses/bounding_rotated_ellipses.html" title="为轮廓创建可倾斜的边界框和椭圆" accesskey="N">next</a> |</li>
+        <li class="right">
+          <a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/hull/hull.html" title="计算物体的凸包" accesskey="P">previous</a> |</li>
+        <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/index.html">OpenCV 2.3.2 documentation</a> »</li>
+          <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/tutorials.html">OpenCV 教程</a> »</li>
+          <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/table_of_content_imgproc/table_of_content_imgproc.html" accesskey="U"><em>imgproc</em> 模块. 图像处理</a> »</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="bounding-rects-circles">
+<span id="id1"></span><h1>创建包围轮廓的矩形和圆形边界框<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#bounding-rects-circles" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2>目标<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id2" title="Permalink to this headline">¶</a></h2>
+<p>在这节教程中您将学到:</p>
+<div class="enumeratevisibleitemswithsquare container">
+<ul class="simple">
+<li>使用OpenCV函数 <a class="reference external" href="http://opencv.willowgarage.com/documentation/cpp/imgproc_structural_analysis_and_shape_descriptors.html#cv-boundingrect">boundingRect</a> 来计算包围轮廓的矩形框.</li>
+<li>使用OpenCV函数 <a class="reference external" href="http://opencv.willowgarage.com/documentation/cpp/imgproc_structural_analysis_and_shape_descriptors.html#cv-minenclosingcircle">minEnclosingCircle</a> 来计算完全包围已有轮廓最小圆.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>原理<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id3" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id4">
+<h2>代码<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id4" title="Permalink to this headline">¶</a></h2>
+<p>下面是本节教程源码. 你也可以从 <a class="reference external" href="https://code.ros.org/svn/opencv/trunk/opencv/samples/cpp/tutorial_code/ShapeDescriptors/generalContours_demo1.cpp">这里</a> 下载.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include "opencv2/highgui/highgui.hpp"</span>
+<span class="cp">#include "opencv2/imgproc/imgproc.hpp"</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">Mat</span> <span class="n">src</span><span class="p">;</span> <span class="n">Mat</span> <span class="n">src_gray</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">thresh</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">max_thresh</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+<span class="n">RNG</span> <span class="n">rng</span><span class="p">(</span><span class="mi">12345</span><span class="p">);</span>
+
+<span class="c1">/// 函数声明</span>
+<span class="kt">void</span> <span class="n">thresh_callback</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="p">);</span>
+
+<span class="cm">/** @主函数 */</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">/// 载入原图像, 返回3通道图像</span>
+  <span class="n">src</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span> <span class="p">);</span>
+
+  <span class="c1">/// 转化成灰度图像并进行平滑</span>
+  <span class="n">cvtColor</span><span class="p">(</span> <span class="n">src</span><span class="p">,</span> <span class="n">src_gray</span><span class="p">,</span> <span class="n">CV_BGR2GRAY</span> <span class="p">);</span>
+  <span class="n">blur</span><span class="p">(</span> <span class="n">src_gray</span><span class="p">,</span> <span class="n">src_gray</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
+
+  <span class="c1">/// 创建窗口</span>
+  <span class="kt">char</span><span class="o">*</span> <span class="n">source_window</span> <span class="o">=</span> <span class="s">"Source"</span><span class="p">;</span>
+  <span class="n">namedWindow</span><span class="p">(</span> <span class="n">source_window</span><span class="p">,</span> <span class="n">CV_WINDOW_AUTOSIZE</span> <span class="p">);</span>
+  <span class="n">imshow</span><span class="p">(</span> <span class="n">source_window</span><span class="p">,</span> <span class="n">src</span> <span class="p">);</span>
+
+  <span class="n">createTrackbar</span><span class="p">(</span> <span class="s">" Threshold:"</span><span class="p">,</span> <span class="s">"Source"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">thresh</span><span class="p">,</span> <span class="n">max_thresh</span><span class="p">,</span> <span class="n">thresh_callback</span> <span class="p">);</span>
+  <span class="n">thresh_callback</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+
+  <span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/** @thresh_callback 函数 */</span>
+<span class="kt">void</span> <span class="n">thresh_callback</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">Mat</span> <span class="n">threshold_output</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">contours</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">Vec4i</span><span class="o">&gt;</span> <span class="n">hierarchy</span><span class="p">;</span>
+
+  <span class="c1">/// 使用Threshold检测边缘</span>
+  <span class="n">threshold</span><span class="p">(</span> <span class="n">src_gray</span><span class="p">,</span> <span class="n">threshold_output</span><span class="p">,</span> <span class="n">thresh</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">THRESH_BINARY</span> <span class="p">);</span>
+  <span class="c1">/// 找到轮廓</span>
+  <span class="n">findContours</span><span class="p">(</span> <span class="n">threshold_output</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">hierarchy</span><span class="p">,</span> <span class="n">CV_RETR_TREE</span><span class="p">,</span> <span class="n">CV_CHAIN_APPROX_SIMPLE</span><span class="p">,</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">);</span>
+
+  <span class="c1">/// 多边形逼近轮廓 + 获取矩形和圆形边界框</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">contours_poly</span><span class="p">(</span> <span class="n">contours</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">Rect</span><span class="o">&gt;</span> <span class="n">boundRect</span><span class="p">(</span> <span class="n">contours</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;</span><span class="n">center</span><span class="p">(</span> <span class="n">contours</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="n">radius</span><span class="p">(</span> <span class="n">contours</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+
+  <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">contours</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+     <span class="p">{</span> <span class="n">approxPolyDP</span><span class="p">(</span> <span class="n">Mat</span><span class="p">(</span><span class="n">contours</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">contours_poly</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">true</span> <span class="p">);</span>
+       <span class="n">boundRect</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">boundingRect</span><span class="p">(</span> <span class="n">Mat</span><span class="p">(</span><span class="n">contours_poly</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">);</span>
+       <span class="n">minEnclosingCircle</span><span class="p">(</span> <span class="n">contours_poly</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">center</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">radius</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+     <span class="p">}</span>
+
+
+  <span class="c1">/// 画多边形轮廓 + 包围的矩形框 + 圆形框</span>
+  <span class="n">Mat</span> <span class="n">drawing</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span> <span class="n">threshold_output</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">CV_8UC3</span> <span class="p">);</span>
+  <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">contours</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+     <span class="p">{</span>
+       <span class="n">Scalar</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">(</span> <span class="n">rng</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">rng</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">rng</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span> <span class="p">);</span>
+       <span class="n">drawContours</span><span class="p">(</span> <span class="n">drawing</span><span class="p">,</span> <span class="n">contours_poly</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Vec4i</span><span class="o">&gt;</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Point</span><span class="p">()</span> <span class="p">);</span>
+       <span class="n">rectangle</span><span class="p">(</span> <span class="n">drawing</span><span class="p">,</span> <span class="n">boundRect</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">tl</span><span class="p">(),</span> <span class="n">boundRect</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">br</span><span class="p">(),</span> <span class="n">color</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+       <span class="n">circle</span><span class="p">(</span> <span class="n">drawing</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">radius</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+     <span class="p">}</span>
+
+  <span class="c1">/// 显示在一个窗口</span>
+  <span class="n">namedWindow</span><span class="p">(</span> <span class="s">"Contours"</span><span class="p">,</span> <span class="n">CV_WINDOW_AUTOSIZE</span> <span class="p">);</span>
+  <span class="n">imshow</span><span class="p">(</span> <span class="s">"Contours"</span><span class="p">,</span> <span class="n">drawing</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>代码说明<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id6" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id7">
+<h2>结果<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id7" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">如下所示:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><p class="first last"><img alt="BRC_0" class="align-middle" src="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/Bounding_Rects_Circles_Source_Image.jpg"></p>
+</td>
+<td><p class="first last"><img alt="BRC_1" class="align-middle" src="./创建包围轮廓的矩形和圆形边界框 — OpenCV 2.3.2 documentation_files/Bounding_Rects_Circles_Result.jpg"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div>
+<div class="section" id="id8">
+<h2>翻译者<a class="headerlink" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id8" title="Permalink to this headline">¶</a></h2>
+<p>guoming0000@ <a class="reference external" href="http://www.opencv.org.cn/">OpenCV中文网站</a> &lt;<a class="reference external" href="mailto:guoming0000%40sina.com">guoming0000<span>@</span>sina<span>.</span>com</a>&gt;</p>
+</div>
+</div>
+
+
+          </div>
+          <div class="feedback">
+              <h2>Help and Feedback</h2>
+              You did not find what you were looking for?
+              <ul>
+                  
+                  
+                  
+                  <li>Ask a question in the <a href="http://tech.groups.yahoo.com/group/OpenCV/">user group/mailing list</a>.</li>
+                  <li>If you think something is missing or wrong in the documentation,
+                  please file a <a href="https://code.ros.org/trac/opencv/wiki">bug report</a>.</li>
+              </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#">创建包围轮廓的矩形和圆形边界框</a><ul>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id2">目标</a></li>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id3">原理</a></li>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id4">代码</a></li>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id6">代码说明</a></li>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id7">结果</a></li>
+<li><a class="reference internal" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.html#id8">翻译者</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/hull/hull.html" title="previous chapter">计算物体的凸包</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rotated_ellipses/bounding_rotated_ellipses.html" title="next chapter">为轮廓创建可倾斜的边界框和椭圆</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/_sources/doc/tutorials/imgproc/shapedescriptors/bounding_rects_circles/bounding_rects_circles.txt" rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="">
+  <h3>Quick search</h3>
+    <form class="search" action="http://www.opencv.org.cn/opencvdoc/2.3.2/html/search.html" method="get">
+      <input type="text" name="q">
+      <input type="submit" value="Go">
+      <input type="hidden" name="check_keywords" value="yes">
+      <input type="hidden" name="area" value="default">
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/genindex.html" title="General Index">index</a></li>
+        <li class="right">
+          <a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/bounding_rotated_ellipses/bounding_rotated_ellipses.html" title="为轮廓创建可倾斜的边界框和椭圆">next</a> |</li>
+        <li class="right">
+          <a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/shapedescriptors/hull/hull.html" title="计算物体的凸包">previous</a> |</li>
+        <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/index.html">OpenCV 2.3.2 documentation</a> »</li>
+          <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/tutorials.html">OpenCV 教程</a> »</li>
+          <li><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/table_of_content_imgproc/table_of_content_imgproc.html"><em>imgproc</em> 模块. 图像处理</a> »</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        © Copyright 2011, opencv dev team.
+      Last updated on Mar 30, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  
+</body></html>
