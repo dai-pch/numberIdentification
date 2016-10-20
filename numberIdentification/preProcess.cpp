@@ -78,6 +78,15 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 	imshow("检测到的数字区域", src_changeable);
 
 
+	//数字部分分别处理
+	threshold(result[0], result[0], 148, 255, CV_THRESH_BINARY);
+	kernel = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(-1, -1));	//圆核，效果较好
+	erode(result[0], result[0], kernel, Point(-1, -1), 1, 0);
+	dilate(result[0], result[0], kernel, Point(-1, -1), 1, 0);
+	dilate(result[0], result[0], kernel, Point(-1, -1), 1, 0);
+	erode(result[0], result[0], kernel, Point(-1, -1), 1, 0);
+
+
 
 
 	return result;

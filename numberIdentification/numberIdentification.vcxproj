@@ -152,6 +152,7 @@
     <ClInclude Include="header.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="findStringArea.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="preProcess.cpp" />
   </ItemGroup>
