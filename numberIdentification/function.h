@@ -10,3 +10,4 @@ using namespace cv;
 /**********************º¯ÊıÉùÃ÷**********************/
 vector<Mat> preProcess(Mat src, vector<Mat> result);
 vector<Rect> findStringArea(Mat src);
+Mat separateStringArea(Mat src, Rect rectArea);

@@ -6,7 +6,6 @@
 int main()
 {
 	
-	vector<Mat> parts;
 	static Mat src = imread("./img/src.jpg");
 	Mat src_changeable;
 	src.copyTo(src_changeable);
@@ -16,10 +15,15 @@ int main()
 	for (int i = 0; i < stringArea.size(); i++)
 		rectangle(src_changeable, stringArea[i], Scalar(CV_RGB(255, 0, 0)), 2, 8, 0);
 
+	vector<Mat> parts;
+	parts.clear();
+	for (int i = 0; i < stringArea.size(); i++)
+		parts.push_back(separateStringArea(src, stringArea[i]));
+	
 
-
-	//parts = preProcess(src, parts);
-
+	imshow("parts0", parts[0]);
+	imshow("parts1", parts[1]);
+	imshow("parts2", parts[2]);
 	imshow("test", src_changeable);
 	waitKey(0);
 	return 0;
