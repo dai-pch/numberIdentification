@@ -157,6 +157,7 @@
     <ClCompile Include="findStringArea.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="preProcess.cpp" />
+    <ClCompile Include="recognizeNumber.cpp" />
     <ClCompile Include="separateNumberArea.cpp" />
     <ClCompile Include="separateStringArea.cpp" />
     <ClCompile Include="sortStringArea.cpp" />

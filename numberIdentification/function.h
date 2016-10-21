@@ -28,3 +28,6 @@ void enhanceStringArea(vector<Mat> parts);
 
 //分离数字串中的数字，返回Mat的vector
 vector<Mat> separateNumberArea(Mat part, vector<Rect> number);
+
+//识别数字
+vector<char> recognizeNubmers(const vector<Mat>, const vector<Mat>, const int);

@@ -6,7 +6,7 @@
 int main()
 {
 	
-	static Mat src = imread("./img/src.jpg");
+	Mat src = imread("./img/src.jpg");
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 
@@ -45,7 +45,7 @@ int main()
 	for(int i = 0; i < numbers.size();i++)
 		numbers[i] = findNumberArea(parts_changeable[i], -20, Size(2, 15), Size(2, 300));
 
-	//查看
+	/*//查看
 	char str[6] = "test0";
 	for (int i = 0; i < numbers.size(); i++)
 	{
@@ -55,15 +55,13 @@ int main()
 		}
 		str[4] = (char)(i + '0');
 		imshow(str, parts[i]);
-	}
+	}*/
 	
 	//分离单个数字，注意：一定要注释掉上方的查看部分，否则会有边框
-	vector<Mat> numbersArea0(numbers[0].size());
-	vector<Mat> numbersArea1(numbers[1].size());
-	vector<Mat> numbersArea2(numbers[2].size());
-	numbersArea0 = separateNumberArea(parts[0], numbers[0]);
-	numbersArea1 = separateNumberArea(parts[1], numbers[1]);
-	numbersArea2 = separateNumberArea(parts[2], numbers[2]);
+	vector<Mat> numbersArea0 = separateNumberArea(parts[0], numbers[0]);
+	vector<Mat> numbersArea1 = separateNumberArea(parts[1], numbers[1]);
+	vector<Mat> numbersArea2 = separateNumberArea(parts[2], numbers[2]);
+
 	//查看
 	//char strNum[4] = "2-0";
 	//for (int i = 0; i < numbersArea1.size(); i++)
@@ -85,6 +83,15 @@ int main()
 	//imshow("test", src_changeable);
 	//printf("%d,%d", stringArea[0].x, stringArea[0].y);
 
+	char modulename[20] = "./img/module0.jpg";
+	vector<Mat> modules;
+	for (int ii = 0;ii < 1;ii++) {
+		modulename[12] = '0' + ii;
+		Mat temp = imread(modulename, IMREAD_GRAYSCALE);
+		modules.push_back(temp);
+	}
+	auto nums1 = recognizeNubmers(numbersArea2, modules, 120);
+
 	waitKey(0);
 	return 0;
-}
+} 
