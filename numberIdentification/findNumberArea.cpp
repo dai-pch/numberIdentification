@@ -1,12 +1,49 @@
-#include"header.h"
+ï»¿#include"header.h"
 
-//Ñ°ÕÒÊı×Ö´®ÖĞµ¥¸öÊı×ÖµÄÇøÓò·¶Î§£¬·µ»Ø¾ØĞÎÂÖÀª
+//å¯¹æ¯”åº¦æ‹‰ä¼¸
+Mat ContrastStretch(Mat const SourceImage, double min) {
+	Mat hist;
+	int histSize = 256;
+	calcHist(&SourceImage, 1, 0, Mat(), hist, 1, &histSize, 0);
+	//cout << hist << endl;
+
+	int data_min = 0, data_max = 255;
+	int accumulate = 0, minValue = static_cast<int>(SourceImage.rows * SourceImage.cols * min);
+	for (accumulate = 0; data_min < histSize; data_min++) {
+		accumulate += (hist.at<float>(data_min));
+		if (accumulate > minValue) break;
+	}
+	
+	for (accumulate = 0; data_max >= 0; data_max--) {
+		accumulate += hist.at<float>(data_max);
+		if (accumulate > minValue) break;
+	}
+
+	//cout << data_min << " " << data_max << endl;
+
+	Mat lookUp(1, 256, CV_8U);
+	int len = data_max - data_min;
+
+	if (len < 1) return SourceImage;
+
+	for (int i = 0; i < 256; i++) {
+		if (i < data_min) lookUp.at<uchar>(i) = 0;
+		else if (i > data_max) lookUp.at<uchar>(i) = 255;
+		else lookUp.at<uchar>(i) = static_cast<uchar>(255.0*(i - data_min) / len);
+	}
+
+	Mat resultImage;
+	LUT(SourceImage, lookUp, resultImage);
+	return resultImage;
+}
+
+//å¯»æ‰¾æ•°å­—ä¸²ä¸­å•ä¸ªæ•°å­—çš„åŒºåŸŸèŒƒå›´ï¼Œè¿”å›çŸ©å½¢è½®å»“
 vector<Rect> findNumberArea(Mat src, int thresholdVal)
 {
 	vector<Rect> dstRect;
-	Mat dst;
+	Mat dst, dst2;
 
-	//Í¨µÀ·ÖÀë
+	//é€šé“åˆ†ç¦»
 	vector<Mat> Vchannels;
 	Mat channel_b, channel_g, channel_r;
 	split(src, Vchannels);
@@ -14,18 +51,57 @@ vector<Rect> findNumberArea(Mat src, int thresholdVal)
 	channel_g = Vchannels.at(1);
 	channel_r = Vchannels.at(2);
 
-	channel_r.copyTo(dst);				//ºìÉ«Í¨µÀ¶Ô±È¶È×î¸ß
+	channel_r.copyTo(dst);				//çº¢è‰²é€šé“å¯¹æ¯”åº¦æœ€é«˜
 
-	//ÊÖ¶¯ãĞÖµ»¯
-	threshold(dst, dst, 190, 255, CV_THRESH_BINARY);
+	//ä¸­å€¼æ»¤æ³¢
+	medianBlur(dst, dst, 9);
+	//å½¢æ€å­¦åº•å¸½å‡åŒ€èƒŒæ™¯
+	int eigenlen = dst.rows;
+	morphologyEx(dst, dst, MORPH_BLACKHAT, getStructuringElement(MORPH_RECT, Size(eigenlen, eigenlen)));
 
-	//¸¯Ê´ÅòÕÍ²Ù×÷
-	Mat kernel = getStructuringElement(MORPH_RECT, Size(15, 2), Point(-1, -1));	//ºáÏò¾ØĞÎºË
-	erode(dst, dst, kernel, Point(-1, -1), 1, 0);
-	kernel = getStructuringElement(MORPH_RECT, Size(2, 300), Point(-1, -1));	//×İÏò¾ØĞÎºË
-	dilate(dst, dst, kernel, Point(-1, -1), 1, 0);
+	//ç°åº¦æ‹‰ä¼¸
+	dst = ContrastStretch(dst, 0.05);
+	//æ‰‹åŠ¨é˜ˆå€¼åŒ–
+	//threshold(dst, dst2, 65, 255, CV_THRESH_BINARY);
+	adaptiveThreshold(dst, dst, 255, ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY_INV, 2 * (eigenlen/8) + 1, 10);
+
+	//è†¨èƒ€
+	erode(dst, dst, getStructuringElement(MORPH_ELLIPSE, Size(eigenlen / 16, eigenlen / 8)));
+
+
+	const int high = 50;
+	vector<unsigned char> horizonProjection(static_cast<size_t>(dst.cols));
+	Mat hor(high, dst.cols ,CV_8UC1);
+	for (int ii = 0; ii < dst.cols; ii++) {
+		int sum = 0;
+		for (int jj = 0;jj < dst.rows;jj++) {
+			sum += dst.at<unsigned char>(Point(ii, jj));
+		}
+		hor(Rect(ii,0,1, high)) = sum/dst.rows;
+		horizonProjection[ii] = sum / dst.rows;
+	}
+	hor = ContrastStretch(hor, 0.05);
+	//cout << hor;
+
+	//åˆ‡åˆ†
+	vector<unsigned int>posi;
+	unsigned int begin;
+	for (int ii = 0;ii < horizonProjection.size();) {
+		begin = ii;
+		while (horizonProjection[ii] < 5)
+			++ii;
+		posi.push_back((begin + ii) / 2);
+		while (horizonProjection[ii] > 0)
+			++ii;
+	}
+
+	for (int ii = 1;ii < posi.size();++ii) {
+		dstRect.push_back(Rect(Point(posi[ii - 1], 0), Point(posi[ii], dst.rows)));
+	}
 
 	imshow("show", dst);
+	imshow("pro", hor);
+	waitKey();
 
 	return dstRect;
 }

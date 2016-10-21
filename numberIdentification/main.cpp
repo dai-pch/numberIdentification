@@ -25,7 +25,16 @@ int main()
 		parts.push_back(separateStringArea(src, stringArea[i]));
 
 	vector<Rect> numbers0 = findNumberArea(parts[0], 190);
+	vector<Rect> numbers1 = findNumberArea(parts[1], 190);
+	vector<Rect> numbers2 = findNumberArea(parts[2], 190);
 	
+	char str[5] = "img0";
+	int ii = 0;
+	for (auto x : numbers0) {
+		str[4] = (ii++) + '0';
+		imshow(str, parts[0](x));
+	}
+	waitKey();
 
 	//imshow("parts0", parts[0]);
 	//imshow("parts1", parts[1]);
