@@ -31,3 +31,6 @@ vector<Mat> separateNumberArea(Mat part, vector<Rect> number);
 
 //识别数字
 vector<char> recognizeNubmers(const vector<Mat>, const vector<Mat>, const int);
+
+//对比度拉伸
+Mat ContrastStretch(Mat const SourceImage, double min);

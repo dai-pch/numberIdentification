@@ -83,15 +83,37 @@ int main()
 	//imshow("test", src_changeable);
 	//printf("%d,%d", stringArea[0].x, stringArea[0].y);
 
-	char modulename[20] = "./img/module0.jpg";
+	char modulename[40] = "./img/module0.jpg";
+	//generage template
+	/*char modulename2[40] = "./img/img/module0.jpg";
+	for (int ii = 0;ii < 9;ii++) {
+		modulename2[16] = '0' + ii;
+		modulename[12] = '0' + ii;
+		Mat temp = imread(modulename2, IMREAD_GRAYSCALE);
+		temp = ContrastStretch(temp, 0.05);
+		threshold(temp, temp, 180, 255, CV_THRESH_BINARY);
+		erode(temp, temp, getStructuringElement(CV_SHAPE_ELLIPSE, Size(7, 7)));
+		imwrite(modulename, temp);
+	}*/
+
+
 	vector<Mat> modules;
-	for (int ii = 0;ii < 1;ii++) {
+	for (int ii = 0;ii < 9;ii++) {
 		modulename[12] = '0' + ii;
 		Mat temp = imread(modulename, IMREAD_GRAYSCALE);
 		modules.push_back(temp);
 	}
-	auto nums1 = recognizeNubmers(numbersArea2, modules, 120);
+	auto nums0 = recognizeNubmers(numbersArea0, modules, 120);
+	auto nums1 = recognizeNubmers(numbersArea1, modules, 120);
+	auto nums2 = recognizeNubmers(numbersArea2, modules, 120);
+	for (auto x : nums0) cout << x;
+	cout << endl;
+	for (auto x : nums1) cout << x;
+	cout << endl;
+	for (auto x : nums2) cout << x;
+	cout << endl;
 
-	waitKey(0);
+	system("pause");
+	//waitKey(0);
 	return 0;
 } 
