@@ -6,7 +6,7 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 	result.clear();
 	Mat src_changeable;
 	src.copyTo(src_changeable);
-	Mat dst,temp_mask;
+	Mat dst,temp,temp_mask;
 	//通道分离
 	vector<Mat> Vchannels;
 	Mat channel_b, channel_g, channel_r;
@@ -30,7 +30,7 @@ vector<Mat> preProcess(Mat src, vector<Mat> result)
 	//dst = dst + mask * 4;
 
 	//全局阈值化，效果不好，放弃
-	//adaptiveThreshold(temp, dst, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+	//adaptiveThreshold(dst, dst, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 51, -20);
 
 	//手动阈值化
 	threshold(dst, dst, 155, 255, CV_THRESH_BINARY);

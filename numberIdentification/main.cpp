@@ -10,8 +10,13 @@ int main()
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 
+	//for test
+	//vector<Mat> temptest;
+	//preProcess(src, temptest);
+
 	//查找区域
 	vector<Rect> stringArea = findStringArea(src);
+	
 	//从上到下序号排序
 	stringArea = sortStringArea(stringArea);
 	//查看找到的区域
@@ -27,24 +32,30 @@ int main()
 		parts.push_back(separateStringArea(src, stringArea[i]));
 		parts[i].copyTo(parts_changeable[i]);
 	}
-	enhanceStringArea(parts_changeable);
+	//enhanceStringArea(parts_changeable);
 
 	//寻找单个区域中的单个数字
 	vector<vector<Rect>> numbers(parts.size());
-	numbers[0] = findNumberArea(parts_changeable[0], 190, Size(10, 2), Size(2, 300));
-	numbers[1] = findNumberArea(parts_changeable[1], 155, Size(10, 2), Size(2, 300));
-	numbers[2] = findNumberArea(parts_changeable[2], 150, Size(2, 11), Size(2, 300));
+	//findNumberAreaWay == 0 手动阈值化，需配合enhanceStringArea使用
+	//numbers[0] = findNumberArea(parts_changeable[0], 190, Size(10, 2), Size(2, 300));
+	//numbers[1] = findNumberArea(parts_changeable[1], 155, Size(10, 2), Size(2, 300));
+	//numbers[2] = findNumberArea(parts_changeable[2], 150, Size(2, 11), Size(2, 300));
+
+	//findNumberAreaWay == 1 局部自适应阈值化
+	for(int i = 0; i < numbers.size();i++)
+		numbers[i] = findNumberArea(parts_changeable[i], -20, Size(2, 15), Size(2, 300));
+
 	//查看
-	//char str[6] = "test0";
-	//for (int i = 0; i < numbers.size(); i++)
-	//{
-	//	for(int j = 0; j < numbers[i].size(); j++)
-	//	{
-	//		rectangle(parts[i], numbers[i][j], Scalar(CV_RGB(0, 255, 0)), 1, 8, 0);
-	//	}
-	//	str[4] = (char)(i + '0');
-	//	imshow(str, parts[i]);
-	//}
+	char str[6] = "test0";
+	for (int i = 0; i < numbers.size(); i++)
+	{
+		for(int j = 0; j < numbers[i].size(); j++)
+		{
+			rectangle(parts[i], numbers[i][j], Scalar(CV_RGB(0, 255, 0)), 1, 8, 0);
+		}
+		str[4] = (char)(i + '0');
+		imshow(str, parts[i]);
+	}
 	
 	//分离单个数字，注意：一定要注释掉上方的查看部分，否则会有边框
 	vector<Mat> numbersArea0(numbers[0].size());
