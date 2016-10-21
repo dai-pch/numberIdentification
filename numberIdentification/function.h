@@ -28,3 +28,6 @@ void enhanceStringArea(vector<Mat> parts);
 
 //分离数字串中的数字，返回Mat的vector
 vector<Mat> separateNumberArea(Mat part, vector<Rect> number);
+
+//拟对parts[1]中数字进行切割并储存作为之后的匹配模板
+void cutAndSave(Mat part, vector<Rect> numberRect);

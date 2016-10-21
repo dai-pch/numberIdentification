@@ -23,6 +23,7 @@ int main()
 	for (int i = 0; i < stringArea.size(); i++)
 		rectangle(src_changeable, stringArea[i], Scalar(CV_RGB(255, 0, 0)), 2, 8, 0);
 
+
 	//分离区域
 	vector<Mat> parts;
 	vector<Mat> parts_changeable(stringArea.size());
@@ -45,17 +46,20 @@ int main()
 	for(int i = 0; i < numbers.size();i++)
 		numbers[i] = findNumberArea(parts_changeable[i], -20, Size(2, 15), Size(2, 300));
 
+	//对parts[1]中数字进行切割并储存作为之后的匹配模板，存在img目录
+	cutAndSave(parts[1], numbers[1]);
+
 	//查看
-	char str[6] = "test0";
-	for (int i = 0; i < numbers.size(); i++)
-	{
-		for(int j = 0; j < numbers[i].size(); j++)
-		{
-			rectangle(parts[i], numbers[i][j], Scalar(CV_RGB(0, 255, 0)), 1, 8, 0);
-		}
-		str[4] = (char)(i + '0');
-		imshow(str, parts[i]);
-	}
+	//char str[6] = "test0";
+	//for (int i = 0; i < numbers.size(); i++)
+	//{
+	//	for(int j = 0; j < numbers[i].size(); j++)
+	//	{
+	//		rectangle(parts[i], numbers[i][j], Scalar(CV_RGB(0, 255, 0)), 1, 8, 0);
+	//	}
+	//	str[4] = (char)(i + '0');
+	//	imshow(str, parts[i]);
+	//}
 	
 	//分离单个数字，注意：一定要注释掉上方的查看部分，否则会有边框
 	vector<Mat> numbersArea0(numbers[0].size());

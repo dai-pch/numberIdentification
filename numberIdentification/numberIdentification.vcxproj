@@ -152,6 +152,7 @@
     <ClInclude Include="header.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cutAndSave.cpp" />
     <ClCompile Include="enhanceStringArea.cpp" />
     <ClCompile Include="findNumberArea.cpp" />
     <ClCompile Include="findStringArea.cpp" />

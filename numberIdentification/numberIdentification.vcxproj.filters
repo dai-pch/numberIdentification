@@ -47,5 +47,8 @@
     <ClCompile Include="separateNumberArea.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="cutAndSave.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
