@@ -7,6 +7,7 @@ using namespace cv;
 /********************全局变量声明*********************/
 //static Mat src = imread("./img/src.jpg");
 
+
 /**********************函数声明**********************/
 
 //图像预处理函数（测试）
@@ -31,3 +32,9 @@ vector<Mat> separateNumberArea(Mat part, vector<Rect> number);
 
 //拟对parts[1]中数字进行切割并储存作为之后的匹配模板
 void cutAndSave(Mat part, vector<Rect> numberRect);
+
+//处理单个数字图片
+vector<Mat> numberProcess(vector<Mat> src);
+
+//读入并处理模板，建立匹配信息
+vector<Point> readAndProcessModel(void);

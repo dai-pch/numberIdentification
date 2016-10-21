@@ -6,7 +6,7 @@
 int main()
 {
 	
-	static Mat src = imread("./img/src.jpg");
+	static Mat src = imread("./img/src.bmp");
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 
@@ -47,7 +47,7 @@ int main()
 		numbers[i] = findNumberArea(parts_changeable[i], -20, Size(2, 15), Size(2, 300));
 
 	//对parts[1]中数字进行切割并储存作为之后的匹配模板，存在img目录
-	cutAndSave(parts[1], numbers[1]);
+	//cutAndSave(parts[0], numbers[0]);
 
 	//查看
 	//char str[6] = "test0";
@@ -62,12 +62,10 @@ int main()
 	//}
 	
 	//分离单个数字，注意：一定要注释掉上方的查看部分，否则会有边框
-	vector<Mat> numbersArea0(numbers[0].size());
-	vector<Mat> numbersArea1(numbers[1].size());
-	vector<Mat> numbersArea2(numbers[2].size());
-	numbersArea0 = separateNumberArea(parts[0], numbers[0]);
-	numbersArea1 = separateNumberArea(parts[1], numbers[1]);
-	numbersArea2 = separateNumberArea(parts[2], numbers[2]);
+	vector<Mat> numbersArea0 = separateNumberArea(parts[0], numbers[0]);
+	vector<Mat> numbersArea1 = separateNumberArea(parts[1], numbers[1]);
+	vector<Mat> numbersArea2 = separateNumberArea(parts[2], numbers[2]);
+
 	//查看
 	//char strNum[4] = "2-0";
 	//for (int i = 0; i < numbersArea1.size(); i++)
@@ -81,6 +79,13 @@ int main()
 	//	rectangle(parts[1], numbers[1][j], Scalar(CV_RGB(0, 255, 0)), 1, 8, 0);
 	//}
 	//imshow("part1", parts[1]);
+
+	//处理
+	numbersArea0 = numberProcess(numbersArea0);
+	numbersArea1 = numberProcess(numbersArea1);
+	numbersArea2 = numberProcess(numbersArea2);
+
+	readAndProcessModel();
 
 
 	//imshow("parts0", parts[0]);
