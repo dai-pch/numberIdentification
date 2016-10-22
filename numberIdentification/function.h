@@ -40,3 +40,6 @@ Mat separateChannel(Mat const src);
 
 //计算外接矩形
 vector<Rect> calcExternalRect(Mat const mask_contours);
+
+//计算中心位置并将图像大小标准化
+vector<Rect> calcCenterAndStd(vector<Rect> dstRect);

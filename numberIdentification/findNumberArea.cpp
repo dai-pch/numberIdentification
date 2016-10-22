@@ -4,6 +4,7 @@
 
 Mat separateChannel(Mat const src);
 vector<Rect> calcExternalRect(Mat const mask_contours);
+vector<Rect> calcCenterAndStd(vector<Rect> dstRect);
 
 #if findNumberAreaWay == 0
 //寻找数字串中单个数字的区域范围，返回矩形轮廓
@@ -37,14 +38,7 @@ vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, S
 	);
 
 	//计算矩形中心并宽度标准化
-	for (int i = 0; i < dstRect.size(); i++)
-	{
-		Point center(dstRect[i].x + 0.5 * dstRect[i].width, dstRect[i].y + 0.5 * dstRect[i].height);
-		dstRect[i].x = center.x - NUM_WIDTH/2;
-		dstRect[i].width = NUM_WIDTH;
-		dstRect[i].y = center.y - NUM_HEIGHT/2;
-		dstRect[i].height = NUM_HEIGHT;
-	}
+	dstRect = calcCenterAndStd(dstRect);
 
 	return dstRect;
 }
@@ -85,14 +79,7 @@ vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, S
 	);
 
 	//计算矩形中心并宽度标准化
-	for (int i = 0; i < dstRect.size(); i++)
-	{
-		Point center(dstRect[i].x + 0.5 * dstRect[i].width, dstRect[i].y + 0.5 * dstRect[i].height);
-		dstRect[i].x = center.x - NUM_WIDTH/2;
-		dstRect[i].width = NUM_WIDTH;
-		dstRect[i].y = center.y - NUM_HEIGHT/2;
-		dstRect[i].height = NUM_HEIGHT;
-	}
+	dstRect = calcCenterAndStd(dstRect);
 
 	return dstRect;
 }
