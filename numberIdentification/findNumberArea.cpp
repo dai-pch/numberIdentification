@@ -1,6 +1,4 @@
 #include"header.h"
-#define findNumberAreaWay 1
-//寻找数字串中单个数字的区域范围，返回矩形轮廓
 
 Mat separateChannel(Mat const src);
 vector<Rect> calcExternalRect(Mat const mask_contours);

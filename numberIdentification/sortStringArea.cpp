@@ -20,3 +20,11 @@ vector<Rect> sortStringArea(vector<Rect> srcRect)
 	}
 	return srcRect;
 }
+
+/*C++中的匿名函数方法*/
+/*	
+	//按标号排序
+	std::sort(dstRect.begin(), dstRect.end(),
+		[](Rect rec1, Rect rec2) {return rec1.x < rec2.x; }
+	);
+*/

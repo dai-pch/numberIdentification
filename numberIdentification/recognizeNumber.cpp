@@ -16,7 +16,8 @@ Mat ContrastStretch(Mat const SourceImage, double min)
 			break;
 	}
 
-	for (accumulate = 0; data_max >= 0; data_max--) {
+	for (accumulate = 0; data_max >= 0; data_max--)
+	{
 		accumulate += hist.at<float>(data_max);
 		if (accumulate > minValue)
 			break;
@@ -29,7 +30,8 @@ Mat ContrastStretch(Mat const SourceImage, double min)
 
 	if (len < 1) return SourceImage;
 	//剔除直方图两边并将中间拉伸
-	for (int i = 0; i < 256; i++) {
+	for (int i = 0; i < 256; i++)
+	{
 		if (i < data_min) lookUp.at<uchar>(i) = 0;
 		else if (i > data_max) lookUp.at<uchar>(i) = 255;
 		else lookUp.at<uchar>(i) = static_cast<uchar>(255.0*(i - data_min) / len);
@@ -72,14 +74,16 @@ char recognize(const Mat src, const vector<Mat> modules, const int thre)
 	//imshow("recog", dst);
 	//waitKey();
 	vector<double> rel;
-	for (auto x : modules) {
+	for (auto x : modules)
+	{
 		rel.push_back(relativity(dst, x));
 	}
 	
 	double max = 0;
 	char res=0;
 	
-	for (int ii = 0;ii < rel.size();++ii) {
+	for (int ii = 0;ii < rel.size();++ii)
+	{
 		if (rel[ii] > max) {
 			res = '0' + ii;
 			max = rel[ii];
