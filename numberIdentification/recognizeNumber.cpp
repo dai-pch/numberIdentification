@@ -63,7 +63,7 @@ double relativity(const Mat img, const Mat module)
 //识别
 char recognize(const Mat src, const vector<Mat> modules, const int thre)
 {
-	CV_DbgAssert(src.rows == 120 && src.cols == 60);	//检查图片大小
+	CV_DbgAssert(src.rows == NUM_HEIGHT && src.cols == NUM_WIDTH);	//检查图片大小
 	Mat dst;
 	cvtColor(src, dst, COLOR_BGR2GRAY);
 	dst = ContrastStretch(dst, 0.05);

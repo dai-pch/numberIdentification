@@ -7,3 +7,5 @@ using namespace std;
 using namespace cv;
 
 /**********************宏定义声明**********************/
+#define NUM_HEIGHT 120
+#define NUM_WIDTH 60
