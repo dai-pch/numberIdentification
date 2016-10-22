@@ -2,21 +2,13 @@
 #define findNumberAreaWay 1
 //寻找数字串中单个数字的区域范围，返回矩形轮廓
 
+Mat separateChannel(Mat const src);
+
 #if findNumberAreaWay == 0
 vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, Size kernelSize2)
 {
-	Mat dst;
-
 	//通道分离
-	vector<Mat> Vchannels;
-	Mat channel_b, channel_g, channel_r;
-	split(src, Vchannels);
-	channel_b = Vchannels.at(0);
-	channel_g = Vchannels.at(1);
-	channel_r = Vchannels.at(2);
-
-	channel_r.copyTo(dst);				//红色通道对比度最高
-
+	Mat dst = separateChannel(src);
 	//手动阈值化
 	threshold(dst, dst, thresholdVal, 255, CV_THRESH_BINARY);
 
@@ -68,17 +60,8 @@ vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, S
 #if findNumberAreaWay == 1
 vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, Size kernelSize2)
 {
-	Mat dst;
-
 	//通道分离
-	vector<Mat> Vchannels;
-	Mat channel_b, channel_g, channel_r;
-	split(src, Vchannels);
-	channel_b = Vchannels.at(0);
-	channel_g = Vchannels.at(1);
-	channel_r = Vchannels.at(2);
-
-	channel_r.copyTo(dst);				//红色通道对比度最高
+	Mat dst = separateChannel(src);
 
 	//局部自适应阈值
 	adaptiveThreshold(dst, dst, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 51, thresholdVal);

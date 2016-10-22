@@ -50,5 +50,8 @@
     <ClCompile Include="recognizeNumber.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="separateChannel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

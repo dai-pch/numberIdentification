@@ -34,3 +34,6 @@ vector<char> recognizeNubmers(const vector<Mat>, const vector<Mat>, const int);
 
 //对比度拉伸
 Mat ContrastStretch(Mat const SourceImage, double min);
+
+//通道分离并提取r通道
+Mat separateChannel(Mat const src);

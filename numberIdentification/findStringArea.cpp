@@ -1,18 +1,13 @@
 #include"header.h"
 
+Mat separateChannel(Mat const src);
+
 //寻找数字串区域的函数，返回矩形轮廓
 vector<Rect> findStringArea(Mat const src)
 {
-	Mat dst, temp_mask;
-	//通道分离
-	vector<Mat> Vchannels;
-	Mat channel_b, channel_g, channel_r;
-	split(src, Vchannels);
-	channel_b = Vchannels.at(0);
-	channel_g = Vchannels.at(1);
-	channel_r = Vchannels.at(2);
-
-	channel_r.copyTo(dst);				//红色通道对比度最高
+	Mat temp_mask;
+	//通道分离,红色通道对比度最高
+	Mat dst = separateChannel(src);
 
 	//手动阈值化
 	threshold(dst, dst, 155, 255, CV_THRESH_BINARY);
