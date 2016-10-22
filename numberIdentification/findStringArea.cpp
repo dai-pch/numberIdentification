@@ -1,6 +1,7 @@
 #include"header.h"
 
 Mat separateChannel(Mat const src);
+vector<Rect> calcExternalRect(Mat const mask_contours);
 
 //寻找数字串区域的函数，返回矩形轮廓
 vector<Rect> findStringArea(Mat const src)
@@ -32,19 +33,10 @@ vector<Rect> findStringArea(Mat const src)
 	kernel_mask = getStructuringElement(MORPH_RECT, Size(20, 20), Point(-1, -1));
 	erode(temp_mask, temp_mask, kernel_mask, Point(-1, -1), 1, 0);
 
+	//计算外接矩形
 	Mat mask_contours;
 	temp_mask.copyTo(mask_contours);
-	vector<vector<Point>>contours;
-	vector<Vec4i> hierarchy;
-	findContours(mask_contours, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0));
-	vector<vector<Point>> contours_poly(contours.size());
-	vector<Rect> boundRect(contours.size());
-
-	for (int i = 0; i < contours.size(); i++)
-	{
-		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
-		boundRect[i] = boundingRect(Mat(contours_poly[i]));
-	}
+	vector<Rect> boundRect = calcExternalRect(mask_contours);
 
 	return boundRect;
 }

@@ -3,8 +3,10 @@
 //寻找数字串中单个数字的区域范围，返回矩形轮廓
 
 Mat separateChannel(Mat const src);
+vector<Rect> calcExternalRect(Mat const mask_contours);
 
 #if findNumberAreaWay == 0
+//寻找数字串中单个数字的区域范围，返回矩形轮廓
 vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, Size kernelSize2)
 {
 	//通道分离
@@ -27,16 +29,7 @@ vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, S
 	//计算外接矩形
 	Mat mask_contours;
 	dst.copyTo(mask_contours);
-	vector<vector<Point>>contours;
-	vector<Vec4i> hierarchy;
-	findContours(mask_contours, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0));
-	vector<vector<Point>> contours_poly(contours.size());
-	vector<Rect> dstRect(contours.size());
-	for (int i = 0; i < contours.size(); i++)
-	{
-		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
-		dstRect[i] = boundingRect(Mat(contours_poly[i]));
-	}
+	vector<Rect> dstRect = calcExternalRect(mask_contours);
 
 	//按标号排序
 	std::sort(dstRect.begin(), dstRect.end(), 
@@ -58,6 +51,7 @@ vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, S
 #endif
 
 #if findNumberAreaWay == 1
+//寻找数字串中单个数字的区域范围，返回矩形轮廓
 vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, Size kernelSize2)
 {
 	//通道分离
@@ -83,16 +77,7 @@ vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, S
 	//计算外接矩形
 	Mat mask_contours;
 	dst.copyTo(mask_contours);
-	vector<vector<Point>>contours;
-	vector<Vec4i> hierarchy;
-	findContours(mask_contours, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0));
-	vector<vector<Point>> contours_poly(contours.size());
-	vector<Rect> dstRect(contours.size());
-	for (int i = 0; i < contours.size(); i++)
-	{
-		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
-		dstRect[i] = boundingRect(Mat(contours_poly[i]));
-	}
+	vector<Rect> dstRect = calcExternalRect(mask_contours);
 
 	//按标号排序
 	std::sort(dstRect.begin(), dstRect.end(),

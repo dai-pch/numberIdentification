@@ -9,7 +9,7 @@ int main()
 	/*                          读入图片文件以及初始化                            */
 	const Mat src = imread("./img/src.jpg");
 	Mat src_changeable;
-	src.copyTo(src_changeable);
+	src.copyTo(src_changeable);	//副本
 	/**************************************************************************/
 	//预处理尝试 for test
 	//vector<Mat> temptest;

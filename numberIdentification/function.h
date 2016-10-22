@@ -5,7 +5,7 @@ using namespace std;
 using namespace cv;
 
 /********************全局变量声明*********************/
-//static Mat src = imread("./img/src.jpg");
+
 
 /**********************函数声明**********************/
 
@@ -37,3 +37,6 @@ Mat ContrastStretch(Mat const SourceImage, double min);
 
 //通道分离并提取r通道
 Mat separateChannel(Mat const src);
+
+//计算外接矩形
+vector<Rect> calcExternalRect(Mat const mask_contours);
