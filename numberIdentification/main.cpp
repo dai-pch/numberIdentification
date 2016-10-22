@@ -5,10 +5,11 @@
 
 int main()
 {
-	
-	Mat src = imread("./img/src.jpg");
+	/***************************读入图片文件以及初始化*****************************/
+	const Mat src = imread("./img/src.jpg");
 	Mat src_changeable;
 	src.copyTo(src_changeable);
+
 
 	//for test
 	//vector<Mat> temptest;

@@ -3,7 +3,7 @@
 //寻找数字串中单个数字的区域范围，返回矩形轮廓
 
 #if findNumberAreaWay == 0
-vector<Rect> findNumberArea(Mat src, int thresholdVal, Size kernelSize1, Size kernelSize2)
+vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, Size kernelSize2)
 {
 	Mat dst;
 
@@ -66,7 +66,7 @@ vector<Rect> findNumberArea(Mat src, int thresholdVal, Size kernelSize1, Size ke
 #endif
 
 #if findNumberAreaWay == 1
-vector<Rect> findNumberArea(Mat src, int thresholdVal, Size kernelSize1, Size kernelSize2)
+vector<Rect> findNumberArea(Mat const src, int thresholdVal, Size kernelSize1, Size kernelSize2)
 {
 	Mat dst;
 

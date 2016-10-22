@@ -1,7 +1,7 @@
 #include"header.h"
 
 //图像预处理函数（测试）
-vector<Mat> preProcess(Mat src, vector<Mat> result)
+vector<Mat> preProcess(Mat const src, vector<Mat> result)
 {
 	result.clear();
 	Mat src_changeable;

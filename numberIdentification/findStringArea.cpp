@@ -1,7 +1,7 @@
 #include"header.h"
 
 //寻找数字串区域的函数，返回矩形轮廓
-vector<Rect> findStringArea(Mat src)
+vector<Rect> findStringArea(Mat const src)
 {
 	Mat dst, temp_mask;
 	//通道分离
