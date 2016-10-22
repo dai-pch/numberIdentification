@@ -11,7 +11,7 @@ int main()
 	Mat src_changeable;
 	src.copyTo(src_changeable);
 	/**************************************************************************/
-	//for test
+	//预处理尝试 for test
 	//vector<Mat> temptest;
 	//preProcess(src, temptest);
 	/**************************************************************************/
