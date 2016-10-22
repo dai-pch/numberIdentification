@@ -1,7 +1,8 @@
 #include"header.h"
 
 //对比度拉伸
-Mat ContrastStretch(Mat const SourceImage, double min) {
+Mat ContrastStretch(Mat const SourceImage, double min)
+{
 	Mat hist;
 	int histSize = 256;
 	calcHist(&SourceImage, 1, 0, Mat(), hist, 1, &histSize, 0);
@@ -11,12 +12,14 @@ Mat ContrastStretch(Mat const SourceImage, double min) {
 	int accumulate = 0, minValue = static_cast<int>(SourceImage.rows * SourceImage.cols * min);
 	for (accumulate = 0; data_min < histSize; data_min++) {
 		accumulate += (hist.at<float>(data_min));
-		if (accumulate > minValue) break;
+		if (accumulate > minValue)
+			break;
 	}
 
 	for (accumulate = 0; data_max >= 0; data_max--) {
 		accumulate += hist.at<float>(data_max);
-		if (accumulate > minValue) break;
+		if (accumulate > minValue)
+			break;
 	}
 
 	//cout << data_min << " " << data_max << endl;
@@ -25,7 +28,7 @@ Mat ContrastStretch(Mat const SourceImage, double min) {
 	int len = data_max - data_min;
 
 	if (len < 1) return SourceImage;
-
+	//剔除直方图两边并将中间拉伸
 	for (int i = 0; i < 256; i++) {
 		if (i < data_min) lookUp.at<uchar>(i) = 0;
 		else if (i > data_max) lookUp.at<uchar>(i) = 255;
@@ -33,11 +36,14 @@ Mat ContrastStretch(Mat const SourceImage, double min) {
 	}
 
 	Mat resultImage;
+	//查找表，灰度值映射
 	LUT(SourceImage, lookUp, resultImage);
 	return resultImage;
 }
 
-double relativity(const Mat img, const Mat module) {
+//计算图像和模板之间的相关度
+double relativity(const Mat img, const Mat module)
+{
 	//cout << img << endl;
 	//cout << module << endl;
 	/*Mat temp1 = (img / 240),temp2 = (module / 240);
@@ -49,12 +55,15 @@ double relativity(const Mat img, const Mat module) {
 	matchTemplate(srcsca, module, result, CV_TM_CCOEFF_NORMED);
 	//cout << result;
 	double min, max;
+	//检索最值
 	minMaxLoc(result, &min, &max);
 	return max;
 }
 
-char recognize(const Mat src, const vector<Mat> modules, const int thre) {
-	CV_DbgAssert(src.rows == 120 && src.cols == 60);
+//识别
+char recognize(const Mat src, const vector<Mat> modules, const int thre)
+{
+	CV_DbgAssert(src.rows == 120 && src.cols == 60);	//检查图片大小
 	Mat dst;
 	cvtColor(src, dst, COLOR_BGR2GRAY);
 	dst = ContrastStretch(dst, 0.05);
@@ -81,7 +90,8 @@ char recognize(const Mat src, const vector<Mat> modules, const int thre) {
 	return res;
 }
 
-vector<char> recognizeNubmers(const vector<Mat> srcList, const vector<Mat> modules, const int thre) {
+vector<char> recognizeNubmers(const vector<Mat> srcList, const vector<Mat> modules, const int thre)
+{
 	vector<char> res;
 	for (auto x : srcList) 
 		res.push_back(recognize(x, modules, thre));
